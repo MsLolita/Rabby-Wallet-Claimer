@@ -1,0 +1,2 @@
+BONUS_CODE = "FREEBONUS"
+DELAY = (0, 1)
