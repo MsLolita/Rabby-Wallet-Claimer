@@ -17,13 +17,13 @@ headers = {
     "X-Version": "0.92.48",
     "sec-ch-ua-mobile": "?0",
     "User-Agent": UserAgent().random,
-    "x-api-ts": "1706015066",
+    "x-api-ts": str(int(time.time())),
     "Content-Type": "application/json",
     "x-api-ver": "v2",
     "Accept": "application/json, text/plain, */*",
     "X-Client": "Rabby",
     "sec-ch-ua-platform": '"Windows"',
-    "Origin": "chrome-extension://acmacodkjbdgmoleebolmdjonilkdbch",
+    "Origin": "chrome-extension://acmacodkjb dgmoleebolmdjonilkdbch",
     "Sec-Fetch-Site": "none",
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Dest": "empty",
@@ -33,7 +33,7 @@ headers = {
 
 
 wallets = file_to_list("inputs/wallets.txt")
-proxies = file_to_list("inputs/proxies.txt")
+proxy_list = file_to_list("inputs/proxies.txt")
 
 
 for raw_wallet in wallets:
@@ -52,7 +52,9 @@ for raw_wallet in wallets:
             "invite_code": BONUS_CODE
         }
 
-        response = requests.post(url, headers=headers, json=payload, proxies={"http": f"http://{proxies[0]}"})
+        proxies = {"http": f"http://{proxy_list.pop(0)}"} if proxy_list else None
+
+        response = requests.post(url, headers=headers, json=payload, proxies=proxies)
 
         if response.json().get("error_code") == 0:
             resp_msg = "Claimed!"
